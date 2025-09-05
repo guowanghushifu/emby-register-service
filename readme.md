@@ -1,7 +1,7 @@
 ### 这个工具是我使用Google Gemini 2.5写出来的，只是能用的水平，方便分享自己的emby服务给朋友去注册
 ### 使用方法
 1. 进入代码目录自己构建出docker镜像： `docker build -t emby-register-service .` 然后参考下面的示例编写docker-compose.yml。 如果你不想自己从代码构建，也可以用我构建好的镜像 guowanghushifu/emby-register-service
-2. 找台安装了python的机器执行 `python3 -c "import secrets; print(secrets.token_hex(32))"` 生成签名的密钥填到 FLASK_SECRET_KEY 环境变量
+2. 找台安装了python的机器执行 `python3 -c "import secrets; print(secrets.token_hex(32) + '\n')"` 生成签名的密钥填到 FLASK_SECRET_KEY 环境变量
 3. 修改docker-compose.yml中的其他环境变量
 - PUBLIC_ACCESS_URL: 你这个docker的公网访问地址，如果非标准端口，一起写上，例如 https://your-domain.com:18080
 - ADMIN_PASSWORD：你的管理员密码，不要用弱密码
