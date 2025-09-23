@@ -216,6 +216,10 @@ def emby_register():
             db.close()
             return render_template('register.html', token=full_token_str, error="密码长度至少6位。")
         
+        if len(password) > 32:
+            db.close()
+            return render_template('register.html', token=full_token_str, error="密码长度不能超过32位。")
+        
         # Check for weak passwords
         weak_passwords = ['123456', '123456789', '12345678', '1234567', '123123',
                          'password', 'qwerty', 'abc123', '111111', '000000',

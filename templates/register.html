@@ -31,8 +31,9 @@
                        name="password" 
                        required 
                        minlength="6" 
-                       title="密码长度至少6位">
-                <div class="form-text">密码至少6位，不能是常见弱密码</div>
+                       maxlength="32" 
+                       title="密码长度6-32位">
+                <div class="form-text">密码长度6-32位，不能是常见弱密码</div>
             </div>
             <div class="mb-3">
                 <label for="confirm_password" class="form-label">确认密码</label>
@@ -42,6 +43,7 @@
                        name="confirm_password" 
                        required 
                        minlength="6" 
+                       maxlength="32" 
                        title="请再次输入密码">
                 <div class="invalid-feedback" id="password-error">
                     两次密码输入不一致
@@ -103,6 +105,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (password.length < 6) {
             isValid = false;
             errorMessage = '密码长度至少6位';
+        }
+        else if (password.length > 32) {
+            isValid = false;
+            errorMessage = '密码长度不能超过32位';
         }
         // Check for weak passwords
         else if (weakPasswords.includes(password.toLowerCase())) {
