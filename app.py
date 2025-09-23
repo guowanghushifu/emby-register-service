@@ -204,10 +204,26 @@ def emby_register():
         return render_template('error.html', error_message=error_msg_template)
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+        
+        # Validate username
         if not re.match(r'^[a-zA-Z0-9]{4,32}$', username):
             db.close()
             return render_template('register.html', token=full_token_str, error="用户名不合法：长度需为4-32位，且只能包含英文字母和数字。")
-        password = ''.join(secrets.choice(string.digits) for _ in range(12))
+        
+        # Validate password
+        if len(password) < 6:
+            db.close()
+            return render_template('register.html', token=full_token_str, error="密码长度至少6位。")
+        
+        # Check for weak passwords
+        weak_passwords = ['123456', '123456789', '12345678', '1234567', '123123',
+                         'password', 'qwerty', 'abc123', '111111', '000000',
+                         '1qaz2wsx', 'admin', 'root', '888888', '666666']
+        if password.lower() in weak_passwords:
+            db.close()
+            return render_template('register.html', token=full_token_str, error="密码过于简单，请使用更安全的密码。")
+        
         user_id, error_msg = create_emby_user(username, password)
         if not user_id:
             db.close()

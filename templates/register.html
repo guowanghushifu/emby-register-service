@@ -8,8 +8,8 @@
             <div class="alert alert-danger">{{ error }}</div>
         {% endif %}
 
-        <p class="text-muted">请输入您希望使用的用户名，密码将自动生成。</p>
-        <form method="post">
+        <p class="text-muted">请输入您希望使用的用户名和密码。</p>
+        <form method="post" id="registerForm">
             <input type="hidden" name="token" value="{{ token }}">
             <div class="mb-3">
                 <label for="username" class="form-label">用户名</label>
@@ -23,8 +23,32 @@
                        pattern="[a-zA-Z0-9]+"
                        title="用户名只能包含英文字母和数字，长度为4-32位。">
             </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">密码</label>
+                <input type="password" 
+                       class="form-control" 
+                       id="password" 
+                       name="password" 
+                       required 
+                       minlength="6" 
+                       title="密码长度至少6位">
+                <div class="form-text">密码至少6位，不能是常见弱密码</div>
+            </div>
+            <div class="mb-3">
+                <label for="confirm_password" class="form-label">确认密码</label>
+                <input type="password" 
+                       class="form-control" 
+                       id="confirm_password" 
+                       name="confirm_password" 
+                       required 
+                       minlength="6" 
+                       title="请再次输入密码">
+                <div class="invalid-feedback" id="password-error">
+                    两次密码输入不一致
+                </div>
+            </div>
             <div class="d-grid">
-                <button type="submit" class="btn btn-primary">注册</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">注册</button>
             </div>
         </form>
     </div>
@@ -54,6 +78,71 @@ document.addEventListener('DOMContentLoaded', function() {
         // Insert the warning message right after the title
         cardBody.insertBefore(warningDiv, cardBody.children[1]);
     }
+
+    // Password validation logic
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
+    const submitBtn = document.getElementById('submitBtn');
+    const passwordError = document.getElementById('password-error');
+    const registerForm = document.getElementById('registerForm');
+
+    // Common weak passwords list
+    const weakPasswords = [
+        '123456', '123456789', '12345678', '1234567', '123123',
+        'password', 'qwerty', 'abc123', '111111', '000000',
+        '1qaz2wsx', 'admin', 'root', '888888', '666666'
+    ];
+
+    function validatePassword() {
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        let isValid = true;
+        let errorMessage = '';
+
+        // Check password length
+        if (password.length < 6) {
+            isValid = false;
+            errorMessage = '密码长度至少6位';
+        }
+        // Check for weak passwords
+        else if (weakPasswords.includes(password.toLowerCase())) {
+            isValid = false;
+            errorMessage = '密码过于简单，请使用更安全的密码';
+        }
+        // Check password confirmation
+        else if (confirmPassword && password !== confirmPassword) {
+            isValid = false;
+            errorMessage = '两次密码输入不一致';
+        }
+
+        // Update UI
+        if (!isValid && (password || confirmPassword)) {
+            confirmPasswordInput.classList.add('is-invalid');
+            passwordError.textContent = errorMessage;
+            passwordError.style.display = 'block';
+        } else if (password && confirmPassword && password === confirmPassword) {
+            confirmPasswordInput.classList.remove('is-invalid');
+            confirmPasswordInput.classList.add('is-valid');
+            passwordError.style.display = 'none';
+        } else {
+            confirmPasswordInput.classList.remove('is-invalid', 'is-valid');
+            passwordError.style.display = 'none';
+        }
+
+        return isValid;
+    }
+
+    // Add event listeners
+    passwordInput.addEventListener('input', validatePassword);
+    confirmPasswordInput.addEventListener('input', validatePassword);
+
+    // Form submission validation
+    registerForm.addEventListener('submit', function(e) {
+        if (!validatePassword()) {
+            e.preventDefault();
+            return false;
+        }
+    });
 });
 </script>
 {% endblock %}
