@@ -87,7 +87,7 @@ def login_required(f):
 def create_emby_user(username, password):
     headers = {'X-Emby-Token': EMBY_API_KEY, 'Content-Type': 'application/json'}
     create_url = f"{EMBY_SERVER_URL}/Users/New"
-    create_payload = {"Name": username, "CopyFromUserId": COPY_FROM_USER_ID, "UserCopyOptions": ["UserConfiguration", "UserPolicy"]}
+    create_payload = {"Name": username, "CopyFromUserId": COPY_FROM_USER_ID, "UserCopyOptions": ["UserConfiguration", "UserPolicy", "UserData"]}
     try:
         response = requests.post(create_url, json=create_payload, headers=headers, timeout=15)
         response.raise_for_status()
