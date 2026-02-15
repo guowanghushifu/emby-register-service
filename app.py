@@ -29,6 +29,7 @@ EMBY_SERVER_URL = os.getenv('EMBY_SERVER_URL', '').rstrip('/')
 EMBY_API_KEY = os.getenv('EMBY_API_KEY')
 COPY_FROM_USER_ID = os.getenv('COPY_FROM_USER_ID')
 PUBLIC_ACCESS_URL = os.getenv('PUBLIC_ACCESS_URL', 'YOUR_DOMAIN.com')
+EMBY_SERVER_URL_CLOUDFLARE = os.getenv('EMBY_SERVER_URL_CLOUDFLARE', '').rstrip('/')
 
 
 if not all([ADMIN_PASSWORD, EMBY_SERVER_URL, EMBY_API_KEY, COPY_FROM_USER_ID]):
@@ -240,7 +241,7 @@ def emby_register():
         db.commit()
         db.close()
         
-        return render_template('success.html', username=username, password=password, emby_url=EMBY_SERVER_URL)
+        return render_template('success.html', username=username, password=password, emby_url=EMBY_SERVER_URL, emby_url_cloudflare=EMBY_SERVER_URL_CLOUDFLARE)
     db.close()
     return render_template('register.html', token=full_token_str)
 

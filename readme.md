@@ -6,6 +6,7 @@
 - PUBLIC_ACCESS_URL: 你这个docker的公网访问地址，如果非标准端口，一起写上，例如 https://your-domain.com:18080
 - ADMIN_PASSWORD：你的管理员密码，不要用弱密码
 - EMBY_SERVER_URL：EMBY服务器的地址，如果非标准端口，一起写上，例如 https://emby.your-domain.com:8920
+- EMBY_SERVER_URL_CLOUDFLARE：（可选）Cloudflare加速代理的Emby服务器地址，配置后注册成功页面会提示中国大陆用户可以使用此地址连接
 - EMBY_API_KEY：和EMBY服务器交互的时候需要用到的API，去emby服务器管理面板里面申请
 - COPY_FROM_USER_ID：从模板用户复制emby参数，这里填写他的ID，看如下说明
 
@@ -27,6 +28,7 @@ services:
             - PUBLIC_ACCESS_URL=https://your-reg-domain.com
             - ADMIN_PASSWORD=your_admin_password
             - EMBY_SERVER_URL=https://emby.your-domain.com:8920
+            - EMBY_SERVER_URL_CLOUDFLARE=https://emby-cf.your-domain.com
             - EMBY_API_KEY=your_api_key
             - COPY_FROM_USER_ID=your_template_user_id
         restart: unless-stopped

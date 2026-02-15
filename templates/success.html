@@ -5,25 +5,31 @@
     <div class="card-body text-center">
         <h3 class="card-title text-success">🎉 注册成功！</h3>
         <p>您的Emby账号已创建。请妥善保管以下信息。</p>
-        
+
         {# The user info box now includes the server URL #}
         <div class="alert alert-info text-start">
-            {# NEW: Display the Emby Server URL #}
+            {# Display the Emby Server URL #}
             <p class="mb-1"><strong>服务器地址:</strong> <br><code class="fs-6">{{ emby_url }}</code></p>
+            {% if emby_url_cloudflare %}
+            <p class="mb-1"><strong>Cloudflare加速地址:</strong> <br><code class="fs-6">{{ emby_url_cloudflare }}</code></p>
+            <p class="mb-1 text-muted"><small>🇨🇳 建议直连用户使用Cloudflare加速地址连接，速度可能会更快。</small></p>
+            {% endif %}
             <hr>
             <p class="mb-1"><strong>用户名:</strong> {{ username }}</p>
             <p class="mb-0"><strong>密码:</strong> {{ password }}</p>
         </div>
-        
+
         <div class="alert alert-warning">
             <strong>请妥善保管您的登录信息！</strong> 请记住您设置的密码！
             <br><br>
-            📱 <a href="https://github.com/guowanghushifu/EmbyToolbox" target="_blank" class="text-decoration-none">各平台Emby客户端列表(github)</a>
+            📱 <a href="https://github.com/guowanghushifu/EmbyToolbox" target="_blank"
+                class="text-decoration-none">各平台Emby客户端列表(github)</a>
             <br><br>
-            📱 <a href="https://gitee.com/guowanghushifu/EmbyToolbox" target="_blank" class="text-decoration-none">各平台Emby客户端列表(国内gitee)</a>
+            📱 <a href="https://gitee.com/guowanghushifu/EmbyToolbox" target="_blank"
+                class="text-decoration-none">各平台Emby客户端列表(国内gitee)</a>
             <br><br>
         </div>
-        
+
         <a href="{{ emby_url }}" class="btn btn-primary" target="_blank">前往 Emby 登录</a>
     </div>
 </div>
